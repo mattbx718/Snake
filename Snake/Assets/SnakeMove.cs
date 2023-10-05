@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SnakeMove : MonoBehaviour
 {
@@ -43,6 +44,14 @@ public class SnakeMove : MonoBehaviour
     // FixedUpdate is called at a fix interval
     void FixedUpdate()
     {
+
+        //move the body of the snake 
+        for (int i = segments.Count - 1; i > 0; i--)
+        {
+            segments[i].position = segments[i - 1].position;
+        }
+
+
         //move the snake                                                    
         this.transform.position = new Vector2(                    //get the position   
             Mathf.Round(this.transform.position.x) + direction.x, //round the number add value to x
@@ -63,6 +72,13 @@ public class SnakeMove : MonoBehaviour
         if (other.tag == "Food")
         {
             Grow();
+            Time.fixedDeltaTime -= 0.001f;
+        }
+        else if (other.tag == "Obstacle")   // So the player dies when hitting the walls
+        {
+            Debug.Log("Hit");
+            SceneManager.LoadScene("EndScene"); //change to end scene
+         
         }
     }
 }
